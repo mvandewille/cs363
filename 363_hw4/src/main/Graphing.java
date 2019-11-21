@@ -17,7 +17,6 @@ public class Graphing
 	public static void main(String[] args)
 	{
 		Connection myConn;
-		Statement stmt;
 		PreparedStatement query;
 		Scanner inputScan = new Scanner(System.in);
 		System.out.print("Please enter your username: ");
@@ -29,7 +28,6 @@ public class Graphing
 		try 
 		{
 			myConn = DriverManager.getConnection(dbURL, userName, userPassword);
-			stmt = myConn.createStatement(); 
 			if (userChoice == 1)
 			{
 				query = myConn.prepareStatement("insert into nodes values (?, ?)");
@@ -40,7 +38,7 @@ public class Graphing
 				System.out.print("New node importance: ");
 				int nodeImp = inputScan.nextInt();
 				query.setInt(2, nodeImp);
-				runQuery(stmt, query);
+				query.executeUpdate();
 			}
 			if (userChoice == 2)
 			{
@@ -55,7 +53,7 @@ public class Graphing
 				int tempImp;
 				query = myConn.prepareStatement("select nodename from nodes where nodename= ?");
 				query.setString(1, edgeStart);
-				ResultSet temp = runQuery(stmt, query);
+				ResultSet temp = query.executeQuery();
 				if (!temp.next())
 				{
 					System.out.println("Node " + edgeStart + " does not exist, therefore a new node will be created.");
@@ -67,7 +65,7 @@ public class Graphing
 				}
 				query = myConn.prepareStatement("select nodename from nodes where nodename= ?");
 				query.setString(1, edgeEnd);
-				temp = runQuery(stmt, query);
+				temp = query.executeQuery();
 				if (!temp.next())
 				{
 					System.out.println("Node " + edgeEnd + " does not exist, therefore a new node will be created.");
@@ -82,7 +80,7 @@ public class Graphing
 				query.setString(1, edgeStart);
 				query.setString(2, edgeEnd);
 				query.setInt(3, edgeCost);
-				runQuery(stmt, query);
+				query.executeUpdate();
 			}
 			if (userChoice == 3)
 			{
@@ -93,11 +91,14 @@ public class Graphing
 				query.setString(1, delName);
 				query.setString(2, delName);
 				query.setString(3, delName);
-				runQuery(stmt, query);
+				query.executeUpdate();
 			}
 			if (userChoice == 4)
 			{
-				
+				CallableStatement callQuery;
+				System.out.println("Return reachable nodes selected. Input name of starting node.");
+				System.out.println("Start node: ");
+				String startName = inputScan.nextLine();
 			}
 		}
 		catch (SQLException e) 
@@ -107,9 +108,4 @@ public class Graphing
 
 	}
 	
-	private static ResultSet runQuery(Statement state, PreparedStatement SQLquery)
-	{
-		
-		return null;
-	}
 }
