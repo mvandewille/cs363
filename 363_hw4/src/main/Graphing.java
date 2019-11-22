@@ -39,6 +39,7 @@ public class Graphing
 				int nodeImp = inputScan.nextInt();
 				query.setInt(2, nodeImp);
 				query.executeUpdate();
+				System.out.println("Node successfully inserted.");
 			}
 			if (userChoice == 2)
 			{
@@ -81,6 +82,7 @@ public class Graphing
 				query.setString(2, edgeEnd);
 				query.setInt(3, edgeCost);
 				query.executeUpdate();
+				System.out.println("Edge successfully inserted");
 			}
 			if (userChoice == 3)
 			{
@@ -92,6 +94,7 @@ public class Graphing
 				query.setString(2, delName);
 				query.setString(3, delName);
 				query.executeUpdate();
+				System.out.println("Node and related edges successfuly deleted");
 			}
 			if (userChoice == 4)
 			{
