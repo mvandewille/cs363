@@ -1,5 +1,9 @@
 package main;
 
+/**
+ * @author Max Van de Wille
+ */
+
 import java.util.Scanner;
 
 import javax.imageio.stream.MemoryCacheImageInputStream;
@@ -40,6 +44,7 @@ public class Graphing
 				query.setInt(2, nodeImp);
 				query.executeUpdate();
 				System.out.println("Node successfully inserted.");
+				query.close();
 			}
 			if (userChoice == 2)
 			{
@@ -83,6 +88,7 @@ public class Graphing
 				query.setInt(3, edgeCost);
 				query.executeUpdate();
 				System.out.println("Edge successfully inserted");
+				query.close();
 			}
 			if (userChoice == 3)
 			{
@@ -95,6 +101,7 @@ public class Graphing
 				query.setString(3, delName);
 				query.executeUpdate();
 				System.out.println("Node and related edges successfuly deleted");
+				query.close();
 			}
 			if (userChoice == 4)
 			{
@@ -102,6 +109,17 @@ public class Graphing
 				System.out.println("Return reachable nodes selected. Input name of starting node.");
 				System.out.println("Start node: ");
 				String startName = inputScan.nextLine();
+				String SQLquery = "{call reachable (?,?)}";
+				callQuery = myConn.prepareCall(SQLquery);
+				callQuery.setString(1, startName);
+				ResultSet rs = callQuery.executeQuery();
+				rs.first();
+				System.out.println("Reachable nodes from node " + startName);
+				while (rs.next())
+				{
+					System.out.println(rs.getString(1));
+				}
+				callQuery.close();
 			}
 		}
 		catch (SQLException e) 
